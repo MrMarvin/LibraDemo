@@ -3,10 +3,10 @@ Libra = LibStub:GetLibrary("Libra-alpha")
 LibraDemo = Libra.Addon:Create("LibraDemo")
 
 local function generalSlashCommandTaker(commandline)
-  print("Commandline caught: "..commandline)
+  --print("Commandline caught: "..commandline)
   
   if commandline:match(".*show.*") then
-    
+    wControllpanel:toggleVisibility()
   end
 end
 
