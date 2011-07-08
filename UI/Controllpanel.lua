@@ -13,26 +13,33 @@ local createButton = Libra.UI.Button:Create(wControllpanelContentFrame)
 createButton:SetText("create!")
 createButton:SetPoint("TOPLEFT",numBox,"TOPRIGHT",5,0)
 
-function createButton.Event:LeftUp()
-  if not windows then
-    windows = {}
-    for w=1,numBox:GetValue() do
-      local params = {
-        ["titletext"]="Example Window "..w, 
-        ["size"]={
-          ["height"]=100,
-          ["width"]=200},
-        ["movable"]=true}
-      local newWindow = Libra.UI.Window:Create(params)
-      newWindow:Show()
-      math.randomseed(Inspect.System.Time())
-      newWindow:SetTo(math.random(UIParent:GetWidth()-newWindow:GetWidth()),math.random(UIParent:GetHeight()-newWindow:GetHeight()))
-      table.insert(windows,newWindow)
-    end
-  end 
-end
- 
 wControllpanel:SetContent(wControllpanelContentFrame) 
 wControllpanel:SetToCenter()
 wControllpanel:MoveRelative(-250,(-1/2)*wControllpanel:GetHeight())
 wControllpanel:Show()
+
+-- make sure there is the table with all the windows
+if not demoWindows then
+  demoWindows = {}
+end
+
+
+function createButton.Event:LeftUp() 
+  -- create all the windows
+  for w=1,numBox:GetValue() do
+    local params = {
+      ["titletext"]="Example Window "..w, 
+      ["size"]={
+        ["height"]=100,
+        ["width"]=200},
+      ["movable"]=true}
+    local newWindow = Libra.UI.Window:Create(params)
+    newWindow:Show()                        
+    -- initialise the random generator with something more or less unique...
+    math.randomseed(Inspect.System.Time()*42)
+    -- set the windows to random positions
+    newWindow:SetTo(math.random(UIParent:GetWidth()-newWindow:GetWidth()),math.random(UIParent:GetHeight()-newWindow:GetHeight()))
+    -- add the new windo to the table with all the windows
+    table.insert(demoWindows,newWindow)
+  end
+end
